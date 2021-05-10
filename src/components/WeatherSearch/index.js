@@ -6,7 +6,9 @@ function WeatherSearch(){
     const[webApiKey] = useState("a4a8fbe7c144be93020e3a7f15b622db")
     const[lat, setLat] = useState()
     const[lon, setLon] = useState()
-    const[sunny, setSunny] = useState(false)
+    const[sunny, setSunny] = useState()
+    const[places, setPlaces] = useState([])
+    const[placeLoading, setPlaceLoading] = useState(false)
 
     useEffect(() => {
 
@@ -27,7 +29,7 @@ function WeatherSearch(){
         .then(function(res){
             console.log(res)
             
-            if(res.data.weather[0].icon == "01d" || "01n"){
+            if(res.data.weather[0].icon == "01d" || res.data.weather[0].icon == "01n"){
                 setSunny(true)
                 console.log(sunny)
                 console.log("It's sunny")
@@ -52,7 +54,23 @@ function WeatherSearch(){
         .then(function(res){
 
             console.log("bbox", res)
-            // You are here. You are getting results from a grid search.
+            // You are here. 
+            let boxRes = res.data.list
+            console.log(boxRes)
+            let sunnyPlaces = []
+            
+            for(let i=0;i<boxRes.length;i++){
+                if(boxRes[i].weather[0].icon == "01d" || boxRes[i].weather[0].icon == "01n"){
+                    console.log("It's sunny in:", boxRes[i].name)
+                    sunnyPlaces.push(boxRes[i].name)
+                    setPlaceLoading(true)
+                    setPlaces(sunnyPlaces)
+                    setPlaceLoading(false)
+                } else{
+                    console.log("No freaking sun anywhere")
+                }
+            }
+
             // Now loop through the results to see if any of the cities returned are currently "01d" || "01n"
             // If not then move the grid search. 
         })
@@ -62,7 +80,7 @@ function WeatherSearch(){
     }
  
 
-    
+    console.log(places)
 
 
     return(
@@ -76,7 +94,16 @@ function WeatherSearch(){
         
             <button onClick={(() => searchWeather())}>{sunny ? "Where else is it sunny?" : "Find that sun!"}</button>
             
-      
+            
+
+            <ul style={{ listStyleType: "none"}}>
+                
+                {places.map(item => (
+                    <li key={item}>{item}</li>
+                ))}
+            </ul>
+            
+            
          
         
             
