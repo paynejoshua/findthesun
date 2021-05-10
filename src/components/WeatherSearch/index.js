@@ -15,14 +15,14 @@ function WeatherSearch(){
             setLon(position.coords.longitude)
         })
 
-        getWeather()
+        getCurrentWeather()
 
 
         console.log(lat, lon)
         
     }, [lat, lon])
 
-    function getWeather(){
+    function getCurrentWeather(){
         axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${webApiKey}&units=imperial`)
         .then(function(res){
             console.log(res)
@@ -41,7 +41,28 @@ function WeatherSearch(){
             console.log(error)
         })
     }
+
+    function searchWeather(){
+        let lonLeft = Math.trunc(lon)
+        let latBottom = Math.trunc(lat)
+        let lonRight = lonLeft + 5
+        let latTop = latBottom + 5
+        console.log(lonRight)
+        axios.get(`http://api.openweathermap.org/data/2.5/box/city?bbox=${lonLeft},${latBottom},${lonRight},${latTop},10&appid=${webApiKey}&units=imperial`)
+        .then(function(res){
+
+            console.log("bbox", res)
+            // You are here. You are getting results from a grid search.
+            // Now loop through the results to see if any of the cities returned are currently "01d" || "01n"
+            // If not then move the grid search. 
+        })
+        .catch(function(error){
+            console.log(error)
+        })
+    }
  
+
+    
 
 
     return(
@@ -52,11 +73,10 @@ function WeatherSearch(){
 
         
 
-        {
-            sunny 
-            ? <button> Where else is it sunny?</button>
-            : <button onClick={(() => getWeather())}>Find that Sun!</button>
-        }
+        
+            <button onClick={(() => searchWeather())}>{sunny ? "Where else is it sunny?" : "Find that sun!"}</button>
+            
+      
          
         
             
