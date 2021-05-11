@@ -8,7 +8,8 @@ function WeatherSearch(){
     const[lon, setLon] = useState()
     const[sunny, setSunny] = useState()
     const[places, setPlaces] = useState([])
-    const[placeLoading, setPlaceLoading] = useState(false)
+    const[icon, setIcon] = useState()
+    const[loading, setLoading] = useState(false)
 
     useEffect(() => {
 
@@ -17,31 +18,27 @@ function WeatherSearch(){
             setLon(position.coords.longitude)
         })
 
-        getCurrentWeather()
-
-
-        console.log(lat, lon)
-        
+        getCurrentWeather()        
     }, [lat, lon])
 
     function getCurrentWeather(){
         axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${webApiKey}&units=imperial`)
         .then(function(res){
-            console.log(res)
+            setIcon(res.data.weather[0].icon)
             
-            if(res.data.weather[0].icon == "01d" || res.data.weather[0].icon == "01n"){
+            if(res.data.weather[0].icon === "01d" || res.data.weather[0].icon === "01n"){
                 setSunny(true)
-                console.log(sunny)
-                console.log("It's sunny")
+                
             } else {
                 setSunny(false)
-                console.log(sunny)
-                console.log("It's not sunny")
             }
             
         }).catch(function (error) {
             console.log(error)
         })
+
+        setLoading(true)
+
     }
 
     function searchWeather(){
@@ -49,39 +46,25 @@ function WeatherSearch(){
         let latBottom = Math.trunc(lat)
         let lonRight = lonLeft + 5
         let latTop = latBottom + 5
-        console.log(lonRight)
         axios.get(`http://api.openweathermap.org/data/2.5/box/city?bbox=${lonLeft},${latBottom},${lonRight},${latTop},10&appid=${webApiKey}&units=imperial`)
         .then(function(res){
 
-            console.log("bbox", res)
-            // You are here. 
+            
             let boxRes = res.data.list
-            console.log(boxRes)
             let sunnyPlaces = []
             
             for(let i=0;i<boxRes.length;i++){
-                if(boxRes[i].weather[0].icon == "01d" || boxRes[i].weather[0].icon == "01n"){
-                    console.log("It's sunny in:", boxRes[i].name)
+                if(boxRes[i].weather[0].icon === "01d" || boxRes[i].weather[0].icon === "01n"){
                     sunnyPlaces.push(boxRes[i].name)
-                    setPlaceLoading(true)
                     setPlaces(sunnyPlaces)
-                    setPlaceLoading(false)
-                } else{
-                    console.log("No freaking sun anywhere")
-                }
+                } 
             }
-
-            // Now loop through the results to see if any of the cities returned are currently "01d" || "01n"
-            // If not then move the grid search. 
+            setLoading(false)
         })
         .catch(function(error){
             console.log(error)
         })
     }
- 
-
-    console.log(places)
-
 
     return(
         <>
@@ -90,12 +73,17 @@ function WeatherSearch(){
             <button onClick={(() => switchSearch())}>Search</button> */}
 
         
-
-        
+            
+            <img src={`http://openweathermap.org/img/w/${icon}.png`} style={{width: "5rem"}}/>
+            <br />
             <button onClick={(() => searchWeather())}>{sunny ? "Where else is it sunny?" : "Find that sun!"}</button>
             
             
-
+            {
+                loading
+                ? <p>Just waiting on you to click on that button</p>
+                : <p>It is currently sunny at the following locations:</p>
+                }
             <ul style={{ listStyleType: "none"}}>
                 
                 {places.map(item => (
