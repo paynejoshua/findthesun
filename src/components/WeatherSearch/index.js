@@ -6,7 +6,11 @@ import {Sun} from "react-feather";
 import {Cloud} from "react-feather";
 import {Aperture} from "react-feather";
 import LoadScreen from "../LoadScreen";
-import CountryLookUp from "../CountryLookUp"
+import CountryLookUp from "../CountryLookUp";
+import Container from "react-bootstrap/Container"
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card"
 
 
 function WeatherSearch(props){
@@ -103,11 +107,11 @@ function WeatherSearch(props){
             <button onClick={(() => switchSearch())}>Search</button> */}
 
             
-            <Jumbotron>
+            <Jumbotron style={ sunny ? {background: "#FFDF00"} : cloudy ? {background: "linear-gradient(180deg,#b8a9af,#FFDF00)"} : night ? {background: "black"} : {}}>
 
             {
                 night 
-                ? <Moon />
+                ? <Moon style={{fill: "white"}}/>
                 : sunny ? <Sun />
                 : cloudy ? <Cloud />
                 : <Aperture />
@@ -116,7 +120,7 @@ function WeatherSearch(props){
             {
             sunny ? <h2>Congrats it's sunny in {currentLocation}!</h2>
             : cloudy ? <h2>Looks like it's cloudy but may be sunny in {currentLocation}</h2>
-            : night ? <h2>Go to sleep, and good night, may the sun shine brightly tomorrow in {currentLocation}</h2>
+            : night ? <h2 style={{color: "white"}}>Go to sleep, and good night, may the sun shine brightly tomorrow in {currentLocation}</h2>
             : <h2>Oh dear...it looks like it's not sunny in {currentLocation}</h2>
             }
                 
@@ -130,13 +134,28 @@ function WeatherSearch(props){
                 ? <p>Just waiting on you to click on that button</p>
                 : <p>It is currently sunny</p>
                 }
-                
-            <ul style={{ listStyleType: "none"}}>
+
+            <Container>
+                <Row>
+                <ul style={{ listStyleType: "none"}}>
                 
                 {places.map(item => (
-                    <li key={item}>Here -> {item}</li>
+                    <Col key={item}>
+                        <Card style={{width: '18rem'}}>
+                        
+                                
+                                <Card.Title><li>Here -> {item}</li></Card.Title>
+
+                      
+                     
+                        </Card>
+                    </Col>
                 ))}
             </ul>
+                </Row>
+            </Container>
+
+            
             
              
         </>
