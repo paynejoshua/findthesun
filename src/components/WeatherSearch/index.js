@@ -24,6 +24,7 @@ function WeatherSearch(props){
     const[icon, setIcon] = useState()
     const[loadingWeather, setLoadingWeather] = useState(false)
     const[currentLocation, setCurrentLocation] = useState()
+    const[sunIcon, setSunIcon] = useState(Sun)
 
     useEffect(() => {
 
@@ -44,7 +45,7 @@ function WeatherSearch(props){
            
             setCurrentLocation(res.data.name)
             
-            if(res.data.weather[0].icon === "01d"){
+            if(res.data.weather[0].icon === "01d" || res.data.weather[0].icon === "02d" || res.data.weather[0].icon === "03d"){
                 setSunny(true)
                 setNight(false)
                 
@@ -89,16 +90,26 @@ function WeatherSearch(props){
             
             for(let i=0;i<boxRes.length;i++){
                 if(boxRes[i].weather[0].icon === "01d" || boxRes[i].weather[0].icon === "01n"){
-                    sunnyPlaces.push(boxRes[i].name)
+                    // sunnyPlaces.push(boxRes[i].name)
+                    sunnyPlaces[i] = {
+                        name: boxRes[i].name,
+                        lat: boxRes[i].coord.Lat,
+                        lon: boxRes[i].coord.Lon,
+                        weather: boxRes[i].weather[0].description,
+                        icon: boxRes[i].weather[0].icon
+                    }
                     setPlaces(sunnyPlaces)
                 } 
             }
             setLoadingWeather(false)
+            
         })
         .catch(function(error){
             console.log(error)
         })
     }
+
+    console.log("here boo", places)
 
     return(
         <>
@@ -107,11 +118,15 @@ function WeatherSearch(props){
             <button onClick={(() => switchSearch())}>Search</button> */}
 
             
-            <Jumbotron style={ sunny ? {background: "#FFDF00"} : cloudy ? {background: "linear-gradient(180deg,#b8a9af,#FFDF00)"} : night ? {background: "black"} : {}}>
+            <Jumbotron style={ 
+                sunny ? {background: "#FFDF00"} 
+                : cloudy ? {background: "linear-gradient(180deg,#b8a9af,#FFDF00)"} 
+                : night ? {background: "black"} 
+                : {}}>
 
             {
                 night 
-                ? <Moon style={{fill: "white"}}/>
+                ? <Moon style={{fill: "white"}} />
                 : sunny ? <Sun />
                 : cloudy ? <Cloud />
                 : <Aperture />
@@ -133,25 +148,29 @@ function WeatherSearch(props){
                 loadingWeather
                 ? <p>Just waiting on you to click on that button</p>
                 : <p>It is currently sunny</p>
-                }
+                }    
 
-            <Container>
-                <Row>
-                <ul style={{ listStyleType: "none"}}>
+            <Container fluid >
+                <Row md={3} lg={6} className="justify-content-center">
+                
                 
                 {places.map(item => (
-                    <Col key={item}>
+                    <Col lg={{ span: 4, offset: 1}} md={6} sm={12} className="onHover mb-4" key={item.name}>
                         <Card style={{width: '18rem'}}>
                         
+                                <Sun style={{fill: "orange"}} />
                                 
-                                <Card.Title><li>Here -> {item}</li></Card.Title>
+                                <Card.Title>Here -> {item.name}</Card.Title>
+                                <Card.Body>
+                               {item.weather}
+                                </Card.Body>
 
                       
                      
                         </Card>
                     </Col>
                 ))}
-            </ul>
+    
                 </Row>
             </Container>
 
