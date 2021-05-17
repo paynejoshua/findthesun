@@ -39,4 +39,11 @@
 
 .onHover :hover {
   background-color: #FFDF00;
+  cursor: pointer;
+}
+
+.cloudy {
+  background: url("https://cdn.pixabay.com/photo/2018/05/30/15/39/thunderstorm-3441687_960_720.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }

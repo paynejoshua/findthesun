@@ -45,9 +45,10 @@ function WeatherSearch(props){
            
             setCurrentLocation(res.data.name)
             
-            if(res.data.weather[0].icon === "01d" || res.data.weather[0].icon === "02d" || res.data.weather[0].icon === "03d"){
+            if(res.data.clouds.all <= 10){
                 setSunny(true)
                 setNight(false)
+                setCloudy(false)
                 
             } else if (res.data.weather[0].icon === "01n" || res.data.weather[0].icon === "04n") {
                 setNight(true)
@@ -55,7 +56,7 @@ function WeatherSearch(props){
                 setCloudy(false)
             }
             
-            else if (res.data.weather[0].icon === "04d"){
+            else if (res.data.clouds.all > 10){
                 setSunny(false)
                 setCloudy(true)
                 setNight(false)
@@ -118,9 +119,8 @@ function WeatherSearch(props){
             <button onClick={(() => switchSearch())}>Search</button> */}
 
             
-            <Jumbotron style={ 
-                sunny ? {background: "#FFDF00"} 
-                : cloudy ? {background: "linear-gradient(180deg,#b8a9af,#FFDF00)"} 
+            <Jumbotron className={cloudy ? "cloudy" : ""} style={ 
+                sunny ? {background: "linear-gradient(180deg,#b8a9af,#FFDF00)"} 
                 : night ? {background: "black"} 
                 : {}}>
 
@@ -134,7 +134,7 @@ function WeatherSearch(props){
             
             {
             sunny ? <h2>Congrats it's sunny in {currentLocation}!</h2>
-            : cloudy ? <h2>Looks like it's cloudy but may be sunny in {currentLocation}</h2>
+            : cloudy ? <h2>Looks like it's cloudy in {currentLocation}</h2>
             : night ? <h2 style={{color: "white"}}>Go to sleep, and good night, may the sun shine brightly tomorrow in {currentLocation}</h2>
             : <h2>Oh dear...it looks like it's not sunny in {currentLocation}</h2>
             }
@@ -155,7 +155,7 @@ function WeatherSearch(props){
                 
                 
                 {places.map(item => (
-                    <Col lg={{ span: 4, offset: 1}} md={6} sm={12} className="onHover mb-4" key={item.name}>
+                    <Col lg={{ span: 6, offset: 3}} md={6} sm={12} className="onHover mb-4" key={item.name}>
                         <Card style={{width: '18rem'}}>
                         
                                 <Sun style={{fill: "orange"}} />
