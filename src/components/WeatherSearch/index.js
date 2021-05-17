@@ -10,13 +10,14 @@ import CountryLookUp from "../CountryLookUp";
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card"
+import Card from "react-bootstrap/Card";
+import DistanceCalc from "../DistanceCalculator"
 
 
 function WeatherSearch(props){
     const[webApiKey] = useState("a4a8fbe7c144be93020e3a7f15b622db")
-    const[lat, setLat] = useState()
-    const[lon, setLon] = useState()
+    const[currentLat, setCurrentLat] = useState()
+    const[currentLon, setCurrentLon] = useState()
     const[sunny, setSunny] = useState()
     const[night, setNight] = useState()
     const[cloudy, setCloudy] = useState()
@@ -30,15 +31,15 @@ function WeatherSearch(props){
 
         
         navigator.geolocation.getCurrentPosition(function(position){
-            setLat(position.coords.latitude)
-            setLon(position.coords.longitude)
+            setCurrentLat(position.coords.latitude)
+            setCurrentLon(position.coords.longitude)
         })
 
         getCurrentWeather()        
-    }, [lat, lon])
+    }, [currentLat, currentLon])
 
     function getCurrentWeather(){
-        axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${webApiKey}&units=imperial`)
+        axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${currentLat}&lon=${currentLon}&appid=${webApiKey}&units=imperial`)
         .then(function(res){
             console.log(res)
             setIcon(res.data.weather[0].icon)
@@ -65,6 +66,8 @@ function WeatherSearch(props){
                 setCloudy(false)
                 setNight(false)
             }
+
+
             
             
         }).catch(function (error) {
@@ -77,8 +80,8 @@ function WeatherSearch(props){
 
     function searchWeather(){
         
-        let lonLeft = Math.trunc(lon)
-        let latBottom = Math.trunc(lat)
+        let lonLeft = Math.trunc(currentLon)
+        let latBottom = Math.trunc(currentLat)
         let lonRight = lonLeft + 5
         let latTop = latBottom + 5
         axios.get(`http://api.openweathermap.org/data/2.5/box/city?bbox=${lonLeft},${latBottom},${lonRight},${latTop},10&appid=${webApiKey}&units=imperial`)
@@ -111,6 +114,8 @@ function WeatherSearch(props){
     }
 
     console.log("here boo", places)
+
+    console.log(currentLat, currentLon)
 
     return(
         <>
@@ -163,13 +168,14 @@ function WeatherSearch(props){
                                 <Card.Title>Here -> {item.name}</Card.Title>
                                 <Card.Body>
                                {item.weather}
+                                <DistanceCalc currentLat={currentLat} currentLon={currentLon} destinationLat={item.lat} destinationLon={item.lon}/>
                                 </Card.Body>
 
                       
                      
                         </Card>
                     </Col>
-                ))}
+                ))} 
     
                 </Row>
             </Container>
