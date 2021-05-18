@@ -11,7 +11,8 @@ import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
-import DistanceCalc from "../DistanceCalculator"
+import DistanceCalc from "../DistanceCalculator";
+import DelayFunction from "../../utils/delayFunction";
 
 
 function WeatherSearch(props){
@@ -24,22 +25,25 @@ function WeatherSearch(props){
     const[places, setPlaces] = useState([])
     const[icon, setIcon] = useState()
     const[loadingWeather, setLoadingWeather] = useState(false)
+    const[hasWeatherLoaded, setHasWeatherLodaed] = useState(false)
     const[currentLocation, setCurrentLocation] = useState()
     const[sunIcon, setSunIcon] = useState(Sun)
+    const[isLoadingUserLocation, setIsLoadingUserLocation] = useState(true)
 
     useEffect(() => {
-
-        
         navigator.geolocation.getCurrentPosition(function(position){
             setCurrentLat(position.coords.latitude)
             setCurrentLon(position.coords.longitude)
+            getCurrentWeather(position.coords.latitude, position.coords.longitude) 
         })
 
-        getCurrentWeather()        
+               
     }, [currentLat, currentLon])
 
-    function getCurrentWeather(){
-        axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${currentLat}&lon=${currentLon}&appid=${webApiKey}&units=imperial`)
+    function getCurrentWeather(lat, lon){
+        setIsLoadingUserLocation(true)
+        console.log("start")
+        DelayFunction(axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${webApiKey}&units=imperial`),0)
         .then(function(res){
             console.log(res)
             setIcon(res.data.weather[0].icon)
@@ -68,13 +72,14 @@ function WeatherSearch(props){
             }
 
 
-            
+            setIsLoadingUserLocation(false)
+            console.log("end")
             
         }).catch(function (error) {
             console.log(error)
-        })
+            setIsLoadingUserLocation(false)
 
-        setLoadingWeather(true)
+        })
 
     }
 
@@ -84,6 +89,7 @@ function WeatherSearch(props){
         let latBottom = Math.trunc(currentLat)
         let lonRight = lonLeft + 5
         let latTop = latBottom + 5
+        setLoadingWeather(true)
         axios.get(`http://api.openweathermap.org/data/2.5/box/city?bbox=${lonLeft},${latBottom},${lonRight},${latTop},10&appid=${webApiKey}&units=imperial`)
         .then(function(res){
 
@@ -94,7 +100,6 @@ function WeatherSearch(props){
             
             for(let i=0;i<boxRes.length;i++){
                 if(boxRes[i].weather[0].icon === "01d" || boxRes[i].weather[0].icon === "01n"){
-                    // sunnyPlaces.push(boxRes[i].name)
                     sunnyPlaces[i] = {
                         name: boxRes[i].name,
                         lat: boxRes[i].coord.Lat,
@@ -106,10 +111,12 @@ function WeatherSearch(props){
                 } 
             }
             setLoadingWeather(false)
+            setHasWeatherLodaed(true)
             
         })
         .catch(function(error){
             console.log(error)
+            setLoadingWeather(false)
         })
     }
 
@@ -126,33 +133,40 @@ function WeatherSearch(props){
             
             <Jumbotron className={cloudy ? "cloudy" : ""} style={ 
                 sunny ? {background: "linear-gradient(180deg,#b8a9af,#FFDF00)"} 
-                : night ? {background: "black"} 
-                : {}}>
+                    : night ? {background: "black"} 
+                        : {}}>
 
             {
                 night 
                 ? <Moon style={{fill: "white"}} />
-                : sunny ? <Sun />
-                : cloudy ? <Cloud />
-                : <Aperture />
+                    : sunny ? <Sun />
+                        : cloudy ? <Cloud style={{color: "white"}}/>
+                            : <div/>
             }
             
             {
-            sunny ? <h2>Congrats it's sunny in {currentLocation}!</h2>
-            : cloudy ? <h2>Looks like it's cloudy in {currentLocation}</h2>
-            : night ? <h2 style={{color: "white"}}>Go to sleep, and good night, may the sun shine brightly tomorrow in {currentLocation}</h2>
-            : <h2>Oh dear...it looks like it's not sunny in {currentLocation}</h2>
+            isLoadingUserLocation 
+            ? 
+            
+            <LoadScreen />
+                : sunny ? <h2>Congrats it's sunny in {currentLocation}!</h2>
+                    : cloudy ? <h2 style={{color: "white"}}>Looks like it's cloudy in {currentLocation}</h2>
+                        : night ? <h2 style={{color: "white"}}>Go to sleep, and good night, may the sun shine brightly tomorrow in {currentLocation}</h2>
+                            : <h2>Oh dear...it looks like it's not sunny in {currentLocation}</h2>
             }
                 
             </Jumbotron>
             <br />
-            <button onClick={(() => searchWeather())}>{sunny ? "Where else is it sunny?" : "Find that sun!"}</button>
+            <div style={{ display: "flex", justifyContent: "center"}}>
+
+            <button  onClick={(() => searchWeather())}>{sunny ? "Where else is it sunny?" : "Find that sun!"}</button>
+            </div>
             
          
             {
-                loadingWeather
-                ? <p>Just waiting on you to click on that button</p>
-                : <p>It is currently sunny</p>
+                hasWeatherLoaded 
+                ? <p style={{ display: "flex", justifyContent: "center"}}>It is currently sunny here: </p>
+                : <p style={{ display: "flex", justifyContent: "center"}}>Just waiting on you to click on that button</p>
                 }    
 
             <Container fluid >
@@ -160,13 +174,11 @@ function WeatherSearch(props){
                 
                 
                 {places.map(item => (
-                    <Col lg={{ span: 6, offset: 3}} md={6} sm={12} className="onHover mb-4" key={item.name}>
-                        <Card style={{width: '18rem'}}>
-                        
+                    <Col lg={{ span: 4, offset: 2}} md={6} sm={12} className="onHover mb-4" key={item.name}>
+                        <Card style={{width: '18rem'}} className="sunny">
                                 <Sun style={{fill: "orange"}} />
-                                
-                                <Card.Title>Here -> {item.name}</Card.Title>
-                                <Card.Body>
+                                <Card.Title>{item.name}</Card.Title>
+                                <Card.Body className="sunny">
                                {item.weather}
                                 <DistanceCalc currentLat={currentLat} currentLon={currentLon} destinationLat={item.lat} destinationLon={item.lon}/>
                                 </Card.Body>

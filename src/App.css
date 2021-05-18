@@ -43,7 +43,19 @@
 }
 
 .cloudy {
-  background: url("https://cdn.pixabay.com/photo/2018/05/30/15/39/thunderstorm-3441687_960_720.jpg");
+  background: url("https://media4.giphy.com/media/13bGgH9VnEDsuA/giphy.gif?cid=ecf05e47m93y4p3fdcngzcj66n7zhfogy1bfi0az21g9tbma&rid=giphy.gif&ct=g");
   background-repeat: no-repeat;
   background-size: cover;
+  background-position-y: center;
+}
+
+.locating {
+  background: url("https://dribbble.com/shots/3651282-Jumping-Pin/attachments/3651282-Jumping-Pin?mode=media");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.sunny {
+  background: url("http://gph.is/2cgVLLg") !important;
+  background-repeat: no-repeat !important;
 }

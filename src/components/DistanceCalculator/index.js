@@ -6,8 +6,6 @@ function DistanceCalc(props){
     const[lon1, setLon1] = useState();
     const[lat2, setLat2] = useState();
     const[lon2, setLon2] = useState();
-    const[test, setTest] = useState();
-    const[time, setTime] = useState();
 
 
     useEffect(() => {
@@ -16,7 +14,7 @@ function DistanceCalc(props){
         setLat2(props.destinationLat)
         setLon2(props.destinationLon)
         getDistance(lat1, lon1, lat2, lon2)
-    }, [props])
+    }, [distance])
 
 
     function getDistance(lat1,lon1,lat2,lon2) {
@@ -39,8 +37,7 @@ function DistanceCalc(props){
 
     }
     
-    console.log("here", test)
-
+      console.log("here", distance)
       return(
           <>
             <p>Around {distance} miles away!</p>
