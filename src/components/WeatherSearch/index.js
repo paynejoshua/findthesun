@@ -157,14 +157,22 @@ function WeatherSearch(props){
                 
             </Jumbotron>
             <br />
-            <div style={{ display: "flex", justifyContent: "center"}}>
-
-            <button  onClick={(() => searchWeather())}>{sunny ? "Where else is it sunny?" : "Find that sun!"}</button>
-            </div>
-            
-         
             {
-                hasWeatherLoaded 
+            isLoadingUserLocation
+            ? <></>
+            
+            : <div style={{ display: "flex", justifyContent: "center"}}>
+            
+            <button  onClick={(() => searchWeather())}>{sunny ? "Where else is it sunny?" : "Find that sun!"}</button>
+            </div> 
+                
+            }
+            
+            {
+                isLoadingUserLocation
+                ?<></>
+
+                : hasWeatherLoaded 
                 ? <p style={{ display: "flex", justifyContent: "center"}}>It is currently sunny here: </p>
                 : <p style={{ display: "flex", justifyContent: "center"}}>Just waiting on you to click on that button</p>
                 }    
@@ -180,7 +188,8 @@ function WeatherSearch(props){
                                 <Card.Title>{item.name}</Card.Title>
                                 <Card.Body className="sunny">
                                {item.weather}
-                                <DistanceCalc currentLat={currentLat} currentLon={currentLon} destinationLat={item.lat} destinationLon={item.lon}/>
+                                <DistanceCalc currentLat={currentLat} currentLon={currentLon} 
+                                destinationLat={item.lat} destinationLon={item.lon}/>
                                 </Card.Body>
 
                       

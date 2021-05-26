@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect} from "react";
+import Button from "react-bootstrap/Button"
 
 function DistanceCalc(props){
     const[distance, setDistance] = useState();
@@ -40,8 +41,10 @@ function DistanceCalc(props){
       console.log("here", distance)
       return(
           <>
-            <p>Around {distance} miles away!</p>
-            <p>Should take about {Math.trunc(distance / 60)} hours</p>
+            <p>Around {distance} miles / {Math.trunc(distance / 60)} hours away!</p>
+            {/* pass down props for location and then create button that will load google maps 
+            with location directly inputted into url*/}
+            <Button>Take Me There!</Button>
           </>
       )
 }
