@@ -1,7 +1,9 @@
 import axios from "axios";
-import React from "react"
+import React from "react";
 
 function ChaseSun(props){
+    
+    function findSun(){
     let lonLeft = Math.trunc(props.currentLon)
     let latBottom = Math.trunc(props.currentLat)
     let lonRight = lonLeft + 5
@@ -34,11 +36,11 @@ function ChaseSun(props){
     .catch(function(error){
         console.log(error)
         props.loadingWeather(false)
-    })
+    })}
 
     return(
         <>
-        <button>{props.sunny ? "Where else is it sunny?" : "Find that Sun!"}</button>
+        <button onClick={findSun}>{props.sunny ? "Where else is it sunny?" : "Find that Sun!"}</button>
         </>
     )
     

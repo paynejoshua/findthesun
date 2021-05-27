@@ -86,42 +86,6 @@ function WeatherSearch(props){
 
     }
 
-    // function chaseSun(){
-    //     let lonLeft = Math.trunc(currentLon)
-    //     let latBottom = Math.trunc(currentLat)
-    //     let lonRight = lonLeft + 5
-    //     let latTop = latBottom + 5
-    //     setLoadingWeather(true)
-    //     axios.get(`http://api.openweathermap.org/data/2.5/box/city?bbox=${lonLeft},${latBottom},${lonRight},${latTop},10&appid=${webApiKey}&units=imperial`)
-    //     .then(function(res){
-
-            
-    //         let boxRes = res.data.list
-    //         let sunnyPlaces = []
-    //         console.log(res)
-            
-    //         for(let i=0;i<boxRes.length;i++){
-    //             if(boxRes[i].weather[0].icon === "01d" || boxRes[i].weather[0].icon === "01n"){
-    //                 sunnyPlaces[i] = {
-    //                     name: boxRes[i].name,
-    //                     lat: boxRes[i].coord.Lat,
-    //                     lon: boxRes[i].coord.Lon,
-    //                     weather: boxRes[i].weather[0].description,
-    //                     icon: boxRes[i].weather[0].icon
-    //                 }
-    //                 setPlaces(sunnyPlaces)
-    //             } 
-    //         }
-    //         setLoadingWeather(false)
-    //         setHasWeatherLoaded(true)
-            
-    //     })
-    //     .catch(function(error){
-    //         console.log(error)
-    //         setLoadingWeather(false)
-    //     })
-        
-    // }
 
 
     return(
@@ -165,9 +129,7 @@ function WeatherSearch(props){
                 <Row>
                 <div style={{ display: "flex", justifyContent: "space-around"}}>
                     <Col>
-            
-                {/* <button  onClick={(() => chaseSun())}>{sunny ? "Where else is it sunny?" : "Find that sun!"}</button> */}
-                {/* test: */}
+        
                 <ChaseSun 
                     checkSun={sunny}
                     currentLat={currentLat} 
