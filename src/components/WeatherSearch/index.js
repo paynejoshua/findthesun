@@ -13,6 +13,7 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import DistanceCalc from "../DistanceCalculator";
 import DelayFunction from "../../utils/delayFunction";
+import ChaseSun from "../ChaseSun"
 
 
 function WeatherSearch(props){
@@ -25,13 +26,15 @@ function WeatherSearch(props){
     const[places, setPlaces] = useState([])
     const[icon, setIcon] = useState()
     const[loadingWeather, setLoadingWeather] = useState(false)
-    const[hasWeatherLoaded, setHasWeatherLodaed] = useState(false)
+    const[hasWeatherLoaded, setHasWeatherLoaded] = useState(false)
     const[currentLocation, setCurrentLocation] = useState()
     const[sunIcon, setSunIcon] = useState(Sun)
     const[isLoadingUserLocation, setIsLoadingUserLocation] = useState(true)
+    const[geoLocation, setGeoLocation] = useState(false)
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(function(position){
+            setGeoLocation(true)
             setCurrentLat(position.coords.latitude)
             setCurrentLon(position.coords.longitude)
             getCurrentWeather(position.coords.latitude, position.coords.longitude) 
@@ -83,46 +86,43 @@ function WeatherSearch(props){
 
     }
 
-    function searchWeather(){
+    // function chaseSun(){
+    //     let lonLeft = Math.trunc(currentLon)
+    //     let latBottom = Math.trunc(currentLat)
+    //     let lonRight = lonLeft + 5
+    //     let latTop = latBottom + 5
+    //     setLoadingWeather(true)
+    //     axios.get(`http://api.openweathermap.org/data/2.5/box/city?bbox=${lonLeft},${latBottom},${lonRight},${latTop},10&appid=${webApiKey}&units=imperial`)
+    //     .then(function(res){
+
+            
+    //         let boxRes = res.data.list
+    //         let sunnyPlaces = []
+    //         console.log(res)
+            
+    //         for(let i=0;i<boxRes.length;i++){
+    //             if(boxRes[i].weather[0].icon === "01d" || boxRes[i].weather[0].icon === "01n"){
+    //                 sunnyPlaces[i] = {
+    //                     name: boxRes[i].name,
+    //                     lat: boxRes[i].coord.Lat,
+    //                     lon: boxRes[i].coord.Lon,
+    //                     weather: boxRes[i].weather[0].description,
+    //                     icon: boxRes[i].weather[0].icon
+    //                 }
+    //                 setPlaces(sunnyPlaces)
+    //             } 
+    //         }
+    //         setLoadingWeather(false)
+    //         setHasWeatherLoaded(true)
+            
+    //     })
+    //     .catch(function(error){
+    //         console.log(error)
+    //         setLoadingWeather(false)
+    //     })
         
-        let lonLeft = Math.trunc(currentLon)
-        let latBottom = Math.trunc(currentLat)
-        let lonRight = lonLeft + 5
-        let latTop = latBottom + 5
-        setLoadingWeather(true)
-        axios.get(`http://api.openweathermap.org/data/2.5/box/city?bbox=${lonLeft},${latBottom},${lonRight},${latTop},10&appid=${webApiKey}&units=imperial`)
-        .then(function(res){
+    // }
 
-            
-            let boxRes = res.data.list
-            let sunnyPlaces = []
-            console.log(res)
-            
-            for(let i=0;i<boxRes.length;i++){
-                if(boxRes[i].weather[0].icon === "01d" || boxRes[i].weather[0].icon === "01n"){
-                    sunnyPlaces[i] = {
-                        name: boxRes[i].name,
-                        lat: boxRes[i].coord.Lat,
-                        lon: boxRes[i].coord.Lon,
-                        weather: boxRes[i].weather[0].description,
-                        icon: boxRes[i].weather[0].icon
-                    }
-                    setPlaces(sunnyPlaces)
-                } 
-            }
-            setLoadingWeather(false)
-            setHasWeatherLodaed(true)
-            
-        })
-        .catch(function(error){
-            console.log(error)
-            setLoadingWeather(false)
-        })
-    }
-
-    console.log("here boo", places)
-
-    console.log(currentLat, currentLon)
 
     return(
         <>
@@ -161,10 +161,36 @@ function WeatherSearch(props){
             isLoadingUserLocation
             ? <></>
             
-            : <div style={{ display: "flex", justifyContent: "center"}}>
+            :   <Container>
+                <Row>
+                <div style={{ display: "flex", justifyContent: "space-around"}}>
+                    <Col>
             
-            <button  onClick={(() => searchWeather())}>{sunny ? "Where else is it sunny?" : "Find that sun!"}</button>
-            </div> 
+                {/* <button  onClick={(() => chaseSun())}>{sunny ? "Where else is it sunny?" : "Find that sun!"}</button> */}
+                {/* test: */}
+                <ChaseSun 
+                    checkSun={sunny}
+                    currentLat={currentLat} 
+                    currentLon={currentLon}
+                    webApiKey={webApiKey} 
+                    loadingWeather={(bool) => setLoadingWeather(bool)}
+                    hasWeatherLoaded={(bool) => setHasWeatherLoaded(bool)}
+                    places={(places) => setPlaces(places)}>
+                        
+                    </ChaseSun>
+                    </Col>
+                    <Col>
+                    <button>Check My Favorite Places</button>
+            
+                    </Col>
+                </div>
+                </Row>
+               
+
+           
+                </Container>
+              
+                 
                 
             }
             
