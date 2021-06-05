@@ -4,16 +4,15 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import {Moon} from "react-feather";
 import {Sun} from "react-feather";
 import {Cloud} from "react-feather";
-import {Aperture} from "react-feather";
 import LoadScreen from "../LoadScreen";
-import CountryLookUp from "../CountryLookUp";
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import DistanceCalc from "../DistanceCalculator";
 import DelayFunction from "../../utils/delayFunction";
-import ChaseSun from "../ChaseSun"
+import ChaseSun from "../ChaseSun";
+import Favorites from "../Favorites"
 
 
 function WeatherSearch(props){
@@ -28,7 +27,6 @@ function WeatherSearch(props){
     const[loadingWeather, setLoadingWeather] = useState(false)
     const[hasWeatherLoaded, setHasWeatherLoaded] = useState(false)
     const[currentLocation, setCurrentLocation] = useState()
-    const[sunIcon, setSunIcon] = useState(Sun)
     const[isLoadingUserLocation, setIsLoadingUserLocation] = useState(true)
     const[geoLocation, setGeoLocation] = useState(false)
 
@@ -37,18 +35,19 @@ function WeatherSearch(props){
             setGeoLocation(true)
             setCurrentLat(position.coords.latitude)
             setCurrentLon(position.coords.longitude)
-            getCurrentWeather(position.coords.latitude, position.coords.longitude) 
+            getCurrentWeather(position.coords.latitude, position.coords.longitude)
         })
 
                
     }, [currentLat, currentLon])
+
 
     function getCurrentWeather(lat, lon){
         setIsLoadingUserLocation(true)
         console.log("start")
         DelayFunction(axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${webApiKey}&units=imperial`),0)
         .then(function(res){
-            console.log(res)
+            console.log("local weather", res)
             setIcon(res.data.weather[0].icon)
            
             setCurrentLocation(res.data.name)
@@ -86,8 +85,6 @@ function WeatherSearch(props){
 
     }
 
-
-
     return(
         <>
             {/* <input placeholder="City:" onChange={((e) => setCity(e.target.value))}></input>
@@ -121,76 +118,68 @@ function WeatherSearch(props){
                 
             </Jumbotron>
             <br />
+            
             {
             isLoadingUserLocation
-            ? <></>
+            ? <>Please Hold...</>
             
-            :   <Container>
+            :   <Container fluid>
                 <Row>
-                <div style={{ display: "flex", justifyContent: "space-around"}}>
-                    <Col>
+          
+                  
+
+                    <Col sm={12} md={6} lg={6} xl={6} style={{borderStyle: "solid"}}>
         
-                <ChaseSun 
-                    checkSun={sunny}
-                    currentLat={currentLat} 
-                    currentLon={currentLon}
-                    webApiKey={webApiKey} 
-                    loadingWeather={(bool) => setLoadingWeather(bool)}
-                    hasWeatherLoaded={(bool) => setHasWeatherLoaded(bool)}
-                    places={(places) => setPlaces(places)}>
+                        <ChaseSun 
+                            checkSun={sunny}
+                            currentLat={currentLat} 
+                            currentLon={currentLon}
+                            webApiKey={webApiKey} 
+                            loadingWeather={(bool) => setLoadingWeather(bool)}
+                            hasWeatherLoaded={(bool) => setHasWeatherLoaded(bool)}
+                            places={(places) => setPlaces(places)}>
+                                
+                        </ChaseSun>
+
+                        {
+                            hasWeatherLoaded 
+                            ? <p>It is currently sunny here: </p>
+                          
+                            : <p>Just waiting on you to click on that button</p>
+                            
+                        }
+
+                        {places.map(item => (
+                            <Col key={item.name} sm={12} lg={3} xl={3} xxl={3}>
+                                <Card style={{width: '18rem'}} className="sunny mt-5 dropShadow">
+                                        <Sun style={{fill: "orange"}} />
+                                        <Card.Title>{item.name}</Card.Title>
+                                        <Card.Body className="sunny">
+                                    {item.weather}
+                                        <DistanceCalc currentLat={currentLat} currentLon={currentLon} 
+                                        destinationLat={item.lat} destinationLon={item.lon}/>
+                                        </Card.Body>
+
+                                </Card>
+                            </Col>
+                  
+                        ))} 
+
+
+
                         
-                    </ChaseSun>
                     </Col>
-                    <Col>
-                    <button>Check My Favorite Places</button>
+                
+
+                    <Col sm={12} md={6} lg={6} xl={6} style={{ borderStyle: "solid"}}>
+                    <Favorites webAPIKey={webApiKey}/>
             
                     </Col>
-                </div>
-                </Row>
-               
-
+            </Row>
            
-                </Container>
-              
-                 
-                
+                </Container>   
             }
-            
-            {
-                isLoadingUserLocation
-                ?<></>
 
-                : hasWeatherLoaded 
-                ? <p style={{ display: "flex", justifyContent: "center"}}>It is currently sunny here: </p>
-                : <p style={{ display: "flex", justifyContent: "center"}}>Just waiting on you to click on that button</p>
-                }    
-
-            <Container fluid >
-                <Row md={3} lg={6} className="justify-content-center">
-                
-                
-                {places.map(item => (
-                    <Col lg={{ span: 4, offset: 2}} md={6} sm={12} className="onHover mb-4" key={item.name}>
-                        <Card style={{width: '18rem'}} className="sunny">
-                                <Sun style={{fill: "orange"}} />
-                                <Card.Title>{item.name}</Card.Title>
-                                <Card.Body className="sunny">
-                               {item.weather}
-                                <DistanceCalc currentLat={currentLat} currentLon={currentLon} 
-                                destinationLat={item.lat} destinationLon={item.lon}/>
-                                </Card.Body>
-
-                      
-                     
-                        </Card>
-                    </Col>
-                ))} 
-    
-                </Row>
-            </Container>
-
-            
-            
              
         </>
     )
