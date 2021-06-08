@@ -23,7 +23,7 @@ function ChaseSun(props){
                     name: boxRes[i].name,
                     lat: boxRes[i].coord.Lat,
                     lon: boxRes[i].coord.Lon,
-                    weather: boxRes[i].weather[0].description,
+                    weather: boxRes[i].weather[0].description.toUpperCase(),
                     icon: boxRes[i].weather[0].icon
                 }
                 props.places(sunnyPlaces)

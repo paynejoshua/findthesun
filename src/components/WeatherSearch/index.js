@@ -12,7 +12,7 @@ import Card from "react-bootstrap/Card";
 import DistanceCalc from "../DistanceCalculator";
 import DelayFunction from "../../utils/delayFunction";
 import ChaseSun from "../ChaseSun";
-import Favorites from "../Favorites"
+import Favorites from "../Favorites";
 
 
 function WeatherSearch(props){
