@@ -143,14 +143,14 @@ function WeatherSearch(props){
 
                         {
                             hasWeatherLoaded 
-                            ? <p>It is currently sunny here: </p>
+                            ? <p style={{ marginTop: "1rem"}}>It is currently sunny here: </p>
                           
-                            : <p>Just waiting on you to click on that button</p>
+                            : <p style={{ marginTop: "1rem"}}>Just waiting on you to click on that button</p>
                             
                         }
 
                         {places.map(item => (
-                            <Col key={item.name} sm={12} lg={3} xl={3} xxl={3}>
+                            <Col key={item.name}>
                                 <Card style={{width: '18rem'}} className="sunny mt-5 dropShadow">
                                         <Sun style={{fill: "orange"}} />
                                         <Card.Title>{item.name}</Card.Title>

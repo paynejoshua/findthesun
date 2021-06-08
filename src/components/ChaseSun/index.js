@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import Button from "react-bootstrap/Button"
 
 function ChaseSun(props){
     
@@ -40,7 +41,7 @@ function ChaseSun(props){
 
     return(
         <>
-        <button onClick={findSun}>{props.sunny ? "Where else is it sunny?" : "Find that Sun!"}</button>
+        <Button variant="warning" size="sm" className="dropShadow" onClick={findSun}>{props.sunny ? "Where else is it sunny?" : "Find that Sun!"}</Button>
         </>
     )
     

@@ -71,8 +71,8 @@ function Favorites(props){
             {isFavsListLoaded
             ? <Row>
                 <Col sm={12} md={12} lg={12} xl={12} xxl={12}>
-                <div> Favorites: </div>
-                <Button variant="warning" size="sm" onClick={addFavorite}>Add A Favorite</Button>
+                <Button className="dropShadow" variant="warning" size="sm" onClick={addFavorite}>Add A Favorite</Button>
+                <div style={{ marginTop: "1rem"}}> Favorites: </div>
                 </Col>
                
             {favsList.map(item => (
