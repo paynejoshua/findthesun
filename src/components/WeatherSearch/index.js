@@ -45,7 +45,7 @@ function WeatherSearch(props){
     function getCurrentWeather(lat, lon){
         setIsLoadingUserLocation(true)
         console.log("start")
-        DelayFunction(axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${webApiKey}&units=imperial`),0)
+        DelayFunction(axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${webApiKey}&units=imperial`),0)
         .then(function(res){
             console.log("local weather", res)
             setIcon(res.data.weather[0].icon)
