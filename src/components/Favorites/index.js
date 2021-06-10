@@ -19,6 +19,7 @@ function Favorites(props){
     const[locationInputState, setLocationInputState] = useState();
     const[localStorageArray, setLocalStorageArray] = useState([]);
     const[isLocalStorageEmpty, setIsLocalStorageEmpty] = useState()
+    const[reload, setReload] = useState(false)
 
 
     useEffect(() =>{
@@ -31,10 +32,12 @@ function Favorites(props){
             if(!getFavoritesArray){
                 console.log("no favorites in LS")
                 setIsLocalStorageEmpty(true)
+                setReload(false)
             } 
             else {
             setIsLocalStorageEmpty(false)
             console.log("ls GET", getFavoritesArray)
+            setReload(false)
             
             setLocalStorageArray(getFavoritesArray)
 
@@ -94,7 +97,7 @@ function Favorites(props){
         
         
 
-    }, [])
+    }, [reload])
 
     console.log(locationInputState)
 
@@ -114,7 +117,8 @@ function Favorites(props){
             setLocalStorageArray(currentFavArray)
             
             localStorage.setItem(`favoriteLocations`, JSON.stringify(currentFavArray))  
-            setIsLocalStorageEmpty(false)                 
+            setIsLocalStorageEmpty(false) 
+            setReload(true)                
             axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${locationInputState}&appid=${props.webAPIKey}&units=imperial`)
             .then(function(res){
                 console.log(res.data)
@@ -135,6 +139,7 @@ function Favorites(props){
             
             localStorage.setItem(`favoriteLocations`, JSON.stringify(currentFavArray))
             setIsLocalStorageEmpty(false)
+            setReload(true)
             axios.get(`http://api.openweathermap.org/data/2.5/weather?zip=${locationInputState}&appid=${props.webAPIKey}&units=imperial`)
             .then(function(res){
                 console.log(res.data)
