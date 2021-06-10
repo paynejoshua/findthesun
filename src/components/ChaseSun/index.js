@@ -10,7 +10,7 @@ function ChaseSun(props){
     let lonRight = lonLeft + 5
     let latTop = latBottom + 5
     props.loadingWeather(true)
-    axios.get(`http://api.openweathermap.org/data/2.5/box/city?bbox=${lonLeft},${latBottom},${lonRight},${latTop},10&appid=${props.webApiKey}&units=imperial`)
+    axios.get(`https://api.openweathermap.org/data/2.5/box/city?bbox=${lonLeft},${latBottom},${lonRight},${latTop},10&appid=${props.webApiKey}&units=imperial`)
     .then(function(res){
 
         

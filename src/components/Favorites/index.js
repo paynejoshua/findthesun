@@ -45,7 +45,7 @@ function Favorites(props){
                 console.log("localStorageValues", getFavoritesArray[i])
                 
                 if(/^[a-zA-Z _]+$/.test(getFavoritesArray[i])){
-                let promise = axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${getFavoritesArray[i]}&appid=${props.webAPIKey}&units=imperial`)
+                let promise = axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${getFavoritesArray[i]}&appid=${props.webAPIKey}&units=imperial`)
                 promises.push(promise)
 
                 promise.then(function(res){
@@ -65,7 +65,7 @@ function Favorites(props){
                 })
                 }
                 else if(isNaN(getFavoritesArray[i]) == false){
-                    let promise = axios.get(`http://api.openweathermap.org/data/2.5/weather?zip=${getFavoritesArray[i]}&appid=${props.webAPIKey}&units=imperial`)
+                    let promise = axios.get(`https://api.openweathermap.org/data/2.5/weather?zip=${getFavoritesArray[i]}&appid=${props.webAPIKey}&units=imperial`)
                 promises.push(promise)
 
                 promise.then(function(res){
@@ -119,7 +119,7 @@ function Favorites(props){
             localStorage.setItem(`favoriteLocations`, JSON.stringify(currentFavArray))  
             setIsLocalStorageEmpty(false) 
             setReload(true)                
-            axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${locationInputState}&appid=${props.webAPIKey}&units=imperial`)
+            axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${locationInputState}&appid=${props.webAPIKey}&units=imperial`)
             .then(function(res){
                 console.log(res.data)
             })
@@ -140,7 +140,7 @@ function Favorites(props){
             localStorage.setItem(`favoriteLocations`, JSON.stringify(currentFavArray))
             setIsLocalStorageEmpty(false)
             setReload(true)
-            axios.get(`http://api.openweathermap.org/data/2.5/weather?zip=${locationInputState}&appid=${props.webAPIKey}&units=imperial`)
+            axios.get(`https://api.openweathermap.org/data/2.5/weather?zip=${locationInputState}&appid=${props.webAPIKey}&units=imperial`)
             .then(function(res){
                 console.log(res.data)
             })
