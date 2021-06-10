@@ -89,11 +89,7 @@ function WeatherSearch(props){
 
     return(
         <>
-            {/* <input placeholder="City:" onChange={((e) => setCity(e.target.value))}></input>
-            <input placeholder="State:" onChange={((e) => setState(e.target.value))}></input>
-            <button onClick={(() => switchSearch())}>Search</button> */}
-
-            
+        
             <Jumbotron className={cloudy ? "cloudy" : ""} style={ 
                 sunny ? {background: "linear-gradient(180deg,#b8a9af,#FFDF00)"} 
                     : night ? {background: "black"} 
