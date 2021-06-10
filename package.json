@@ -2,7 +2,7 @@
   "name": "findthesun",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://paynejoshua.github.io/findthesun",
+  "homepage": "https://paynejoshua.github.io/findthesun",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.5",
