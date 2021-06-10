@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/findthesun/static/css/main.25650fdc.chunk.css",
-    "main.js": "/findthesun/static/js/main.76869e81.chunk.js",
-    "main.js.map": "/findthesun/static/js/main.76869e81.chunk.js.map",
+    "main.js": "/findthesun/static/js/main.812631bb.chunk.js",
+    "main.js.map": "/findthesun/static/js/main.812631bb.chunk.js.map",
     "runtime-main.js": "/findthesun/static/js/runtime-main.289c442a.js",
     "runtime-main.js.map": "/findthesun/static/js/runtime-main.289c442a.js.map",
     "static/css/2.4c97ca4f.chunk.css": "/findthesun/static/css/2.4c97ca4f.chunk.css",
@@ -21,6 +21,6 @@
     "static/css/2.4c97ca4f.chunk.css",
     "static/js/2.f98e91e1.chunk.js",
     "static/css/main.25650fdc.chunk.css",
-    "static/js/main.76869e81.chunk.js"
+    "static/js/main.812631bb.chunk.js"
   ]
 }
