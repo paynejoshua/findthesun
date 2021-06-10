@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/findthesun/static/css/main.25650fdc.chunk.css",
+    "main.js": "/findthesun/static/js/main.76869e81.chunk.js",
+    "main.js.map": "/findthesun/static/js/main.76869e81.chunk.js.map",
+    "runtime-main.js": "/findthesun/static/js/runtime-main.289c442a.js",
+    "runtime-main.js.map": "/findthesun/static/js/runtime-main.289c442a.js.map",
+    "static/css/2.4c97ca4f.chunk.css": "/findthesun/static/css/2.4c97ca4f.chunk.css",
+    "static/js/2.f98e91e1.chunk.js": "/findthesun/static/js/2.f98e91e1.chunk.js",
+    "static/js/2.f98e91e1.chunk.js.map": "/findthesun/static/js/2.f98e91e1.chunk.js.map",
+    "static/js/3.0d4b2808.chunk.js": "/findthesun/static/js/3.0d4b2808.chunk.js",
+    "static/js/3.0d4b2808.chunk.js.map": "/findthesun/static/js/3.0d4b2808.chunk.js.map",
+    "index.html": "/findthesun/index.html",
+    "static/css/2.4c97ca4f.chunk.css.map": "/findthesun/static/css/2.4c97ca4f.chunk.css.map",
+    "static/css/main.25650fdc.chunk.css.map": "/findthesun/static/css/main.25650fdc.chunk.css.map",
+    "static/js/2.f98e91e1.chunk.js.LICENSE.txt": "/findthesun/static/js/2.f98e91e1.chunk.js.LICENSE.txt",
+    "static/media/jumping_pin.1ddb6053.gif": "/findthesun/static/media/jumping_pin.1ddb6053.gif"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.289c442a.js",
+    "static/css/2.4c97ca4f.chunk.css",
+    "static/js/2.f98e91e1.chunk.js",
+    "static/css/main.25650fdc.chunk.css",
+    "static/js/main.76869e81.chunk.js"
+  ]
+}
