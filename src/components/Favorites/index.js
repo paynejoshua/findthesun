@@ -169,7 +169,7 @@ function Favorites(props){
             {isFavsListLoaded
             ? <Row>
                 <Col sm={12} md={12} lg={12} xl={12} xxl={12}>
-                <Button className="dropShadow" variant="warning" size="sm" onClick={openFavModal}>Add A Favorite</Button>
+                <Button className="dropShadow mt-5" variant="warning" size="sm" onClick={openFavModal}>Add A Favorite</Button>
                 <div style={{ marginTop: "1rem"}}>{isLocalStorageEmpty ? "No Favorites Added Yet" : "Favorites:" }</div>
                 </Col>
                

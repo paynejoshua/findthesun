@@ -29,6 +29,7 @@ function ChaseSun(props){
                 }
                 props.places(sunnyPlaces)
             }
+            console.log("no places are sunny")
         }
         props.loadingWeather(false)
         props.hasWeatherLoaded(true)
@@ -41,7 +42,7 @@ function ChaseSun(props){
 
     return(
         <>
-        <Button variant="warning" size="sm" className="dropShadow" onClick={findSun}>{props.sunny ? "Where else is it sunny?" : "Find that Sun!"}</Button>
+        <Button variant="warning" size="sm" className="dropShadow mt-5" onClick={findSun}>{props.sunny ? "Where else is it sunny?" : "Find that Sun!"}</Button>
         </>
     )
     
