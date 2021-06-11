@@ -29,20 +29,31 @@ function WeatherSearch(props){
     const[currentLocation, setCurrentLocation] = useState()
     const[isLoadingUserLocation, setIsLoadingUserLocation] = useState(true)
     const[geoLocation, setGeoLocation] = useState(false)
+    const[locationDenied, setLocationDenied] = useState(false)
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition(function(position){
-            setGeoLocation(true)
-            setCurrentLat(position.coords.latitude)
-            setCurrentLon(position.coords.longitude)
-            getCurrentWeather(position.coords.latitude, position.coords.longitude)
-        })
+        
+        navigator.geolocation.getCurrentPosition(positionShared, positionDenied)
 
                
     }, [currentLat, currentLon])
 
+    function positionShared(position){
+        setGeoLocation(true)
+        setCurrentLat(position.coords.latitude)
+        setCurrentLon(position.coords.longitude)
+        getCurrentWeather(position.coords.latitude, position.coords.longitude)
+    }
+
+    function positionDenied(error){
+        if(error.PERMISSION_DENIED){
+            setLocationDenied(true)
+        }
+    }
+
 
     function getCurrentWeather(lat, lon){
+        
         setIsLoadingUserLocation(true)
         console.log("start")
         DelayFunction(axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${webApiKey}&units=imperial`),0)
@@ -82,8 +93,59 @@ function WeatherSearch(props){
             setIsLoadingUserLocation(false)
 
         })
+    
 
     }
+
+    function getZipWeather(zip){
+        
+        setIsLoadingUserLocation(true)
+        console.log("zip", zip)
+        DelayFunction(axios.get(`https://api.openweathermap.org/data/2.5/weather?zip=${zip}&appid=${webApiKey}&units=imperial`),0)
+        .then(function(res){
+
+            setCurrentLat(res.data.coord.lat)
+            setCurrentLon(res.data.coord.lon)
+
+            setIcon(res.data.weather[0].icon)
+           
+            setCurrentLocation(res.data.name)
+            
+            if(res.data.clouds.all <= 10){
+                setSunny(true)
+                setNight(false)
+                setCloudy(false)
+                
+            } else if (res.data.weather[0].icon === "01n" || res.data.weather[0].icon === "04n") {
+                setNight(true)
+                setSunny(false)
+                setCloudy(false)
+            }
+            
+            else if (res.data.clouds.all > 10){
+                setSunny(false)
+                setCloudy(true)
+                setNight(false)
+            } else {
+                setSunny(false)
+                setCloudy(false)
+                setNight(false)
+            }
+
+
+            setIsLoadingUserLocation(false)
+            console.log("end")
+            
+        }).catch(function (error) {
+            console.log(error)
+            setIsLoadingUserLocation(false)
+
+        })
+    
+
+    }
+
+    console.log("location denied lat and lon", currentLat, currentLon)
 
     
 
@@ -107,7 +169,7 @@ function WeatherSearch(props){
             isLoadingUserLocation 
             ? 
             
-            <LoadScreen />
+            <LoadScreen locationPermission={locationDenied} getWeather={getZipWeather} />
                 : sunny ? <h2>Congrats it's sunny in {currentLocation}!</h2>
                     : cloudy ? <h2 style={{color: "white"}}>Looks like it's cloudy in {currentLocation}</h2>
                         : night ? <h2 style={{color: "white"}}>Go to sleep, and good night, may the sun shine brightly tomorrow in {currentLocation}</h2>

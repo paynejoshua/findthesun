@@ -99,8 +99,6 @@ function Favorites(props){
 
     }, [reload])
 
-    console.log(locationInputState)
-
     function openFavModal(){
         setIsFavsModalVisible(true)
     }
@@ -159,7 +157,9 @@ function Favorites(props){
         <FavsModal 
         locationInput={setLocationInputState} 
         show={isFavsModalVisible} onHide={() => setIsFavsModalVisible(false)}
-        stringVerification={locationStringVerification}></FavsModal>
+        stringVerification={locationStringVerification}>
+        </FavsModal>
+        
         <Container fluid>
         
            

@@ -28,7 +28,7 @@ function ChaseSun(props){
                     icon: boxRes[i].weather[0].icon
                 }
                 props.places(sunnyPlaces)
-            } 
+            }
         }
         props.loadingWeather(false)
         props.hasWeatherLoaded(true)
