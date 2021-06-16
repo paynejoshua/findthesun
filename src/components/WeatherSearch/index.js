@@ -103,6 +103,7 @@ function WeatherSearch(props){
         console.log("zip", zip)
         DelayFunction(axios.get(`https://api.openweathermap.org/data/2.5/weather?zip=${zip}&appid=${webApiKey}&units=imperial`),0)
         .then(function(res){
+            console.log("local weather", res)
 
             setCurrentLat(res.data.coord.lat)
             setCurrentLon(res.data.coord.lon)
@@ -111,7 +112,7 @@ function WeatherSearch(props){
            
             setCurrentLocation(res.data.name)
             
-            if(res.data.clouds.all <= 10){
+            if(res.data.clouds.all <= 80 && res.data.weather[0].description == "broken clouds"){
                 setSunny(true)
                 setNight(false)
                 setCloudy(false)
@@ -122,7 +123,7 @@ function WeatherSearch(props){
                 setCloudy(false)
             }
             
-            else if (res.data.clouds.all > 10){
+            else if (res.data.clouds.all > 80){
                 setSunny(false)
                 setCloudy(true)
                 setNight(false)
